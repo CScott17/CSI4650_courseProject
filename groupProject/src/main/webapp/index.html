@@ -1,0 +1,97 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bar Graph Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #282c35; /* Dark Purple */
+            color: #ffffff; /* White */
+        }
+
+        h1 {
+            color: #ffb400; /* Accent Color: Yellow */
+        }
+
+        div {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #ffb400; /* Accent Color: Yellow */
+        }
+
+        select,
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+            background-color: #000000; /* Black */
+            color: #ffffff; /* White */
+            border: none;
+            cursor: pointer;
+        }
+
+        select:hover,
+        button:hover {
+            background-color: #400040; /* Darker Purple on Hover */
+        }
+
+        a {
+            color: #ffb400; /* Accent Color: Yellow */
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff8000; /* Darker Yellow on Hover */
+        }
+    </style>
+</head>
+<body>
+<h1>Bar Graph Website</h1>
+
+<div>
+    <label for="response">Select your response:</label>
+    <select id="response">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+        <option value="dontcare">Don't Care</option>
+    </select>
+    <button onclick="addData()">Submit</button>
+</div>
+
+<!-- Link to the results page -->
+<a href="results.html">View Results</a>
+
+<script>
+    // Array to store multiple sets of user responses
+    let responseData = [];
+
+    // Sample data structure to store user responses for a single set
+    let data = {
+        yes: 0,
+        no: 0,
+        dontcare: 0,
+    };
+
+    // Function to update the data and store in local storage
+    function addData() {
+        const response = document.getElementById("response").value;
+        data[response]++;
+
+        // Clone the data object to store a snapshot in time
+        const snapshot = { ...data };
+        responseData.push(snapshot);
+
+        // Store data in local storage
+        localStorage.setItem("userResponses", JSON.stringify(responseData));
+    }
+</script>
+</body>
+</html>

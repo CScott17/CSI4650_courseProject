@@ -1,0 +1,119 @@
+<!-- results.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #282c35; /* Dark Purple */
+            color: #ffffff; /* White */
+        }
+
+        h1 {
+            color: #ffb400; /* Accent Color: Yellow */
+        }
+
+        a {
+            color: #ffb400; /* Accent Color: Yellow */
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff8000; /* Darker Yellow on Hover */
+        }
+
+        #chartContainer {
+            width: 80%;
+            margin: auto;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            background-color: #000000; /* Black */
+            color: #ffffff; /* White */
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #400040; /* Darker Purple on Hover */
+        }
+    </style>
+</head>
+<body>
+<h1>Results Page</h1>
+
+<!-- Link back to the input page -->
+<a href="index.html">Go Back to Index</a>
+
+<canvas id="chartContainer"></canvas>
+
+<!-- Button to clear stored responses -->
+<button onclick="clearData()">Clear Data</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Get the data passed from the index.html page
+    let responseData =
+        JSON.parse(localStorage.getItem("userResponses")) || [];
+
+    // Function to draw the bar graph using Chart.js library
+    function drawChart() {
+        const canvas = document.getElementById("chartContainer");
+        const ctx = canvas.getContext("2d");
+
+        // Clear previous chart
+        if (window.myChart) {
+            window.myChart.destroy();
+        }
+
+        window.myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Yes", "No", "Don't Care"],
+                datasets: responseData.map((set, index) => ({
+                    label: `Set ${index + 1}`,
+                    data: [set.yes, set.no, set.dontcare],
+                    backgroundColor: [
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(255, 206, 86, 0.2)",
+                    ],
+                    borderColor: [
+                        "rgba(75, 192, 192, 1)",
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(255, 206, 86, 1)",
+                    ],
+                    borderWidth: 1,
+                })),
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    }
+
+    // Draw the chart on page load
+    window.onload = drawChart;
+
+    // Function to clear stored data
+    function clearData() {
+        localStorage.removeItem("userResponses");
+        responseData = [];
+        drawChart();
+    }
+</script>
+</body>
+</html>
