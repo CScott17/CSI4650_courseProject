@@ -54,44 +54,72 @@
     </style>
 </head>
 <body>
-<h1>Bar Graph Website</h1>
+<h1 id="randomQuestionHeading">Random Question:</h1>
 
-<div>
-    <label for="response">Select your response:</label>
-    <select id="response">
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-        <option value="dontcare">Don't Care</option>
-    </select>
-    <button onclick="addData()">Submit</button>
-</div>
 
-<!-- Link to the results page -->
-<a href="results.html">View Results</a>
+<!-- Form to submit votes -->
+<form id="voteForm">
+    <label for="yesVotes">Yes Votes:</label>
+    <input type="number" id="yesVotes" name="yesVotes" min="0"><br><br>
+
+    <label for="noVotes">No Votes:</label>
+    <input type="number" id="noVotes" name="noVotes" min="0"><br><br>
+
+    <label for="dontCareVotes">Don't Care Votes:</label>
+    <input type="number" id="dontCareVotes" name="dontCareVotes" min="0"><br><br>
+
+    <button type="submit">Submit Votes</button>
+</form>
 
 <script>
-    // Array to store multiple sets of user responses
-    let responseData = [];
+    function displayRandomQuestion() {
+        // Array of random questions
+        const questions = [
+            "Do you like to cook?",
+            "Do you prefer coffee to tea?",
+            "Do you enjoy watching sports?",
+            "Do you prefer dogs to cats?",
+            "Would you try skydiving?"
+        ];
 
-    // Sample data structure to store user responses for a single set
-    let data = {
-        yes: 0,
-        no: 0,
-        dontcare: 0,
-    };
+        // Get a random question index
+        const randomIndex = Math.floor(Math.random() * questions.length);
+        const randomQuestion = questions[randomIndex];
 
-    // Function to update the data and store in local storage
-    function addData() {
-        const response = document.getElementById("response").value;
-        data[response]++;
-
-        // Clone the data object to store a snapshot in time
-        const snapshot = { ...data };
-        responseData.push(snapshot);
-
-        // Store data in local storage
-        localStorage.setItem("userResponses", JSON.stringify(responseData));
+        // Display the random question in the heading
+        document.getElementById("randomQuestionHeading").innerText = `Random Question: ${randomQuestion}`;
     }
+
+    // Display a random question when the page loads
+    window.onload = displayRandomQuestion;
+    // Function to handle form submission
+    document.getElementById('voteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get the entered votes
+        const yes = parseInt(document.getElementById('yesVotes').value) || 0;
+        const no = parseInt(document.getElementById('noVotes').value) || 0;
+        const dontCare = parseInt(document.getElementById('dontCareVotes').value) || 0;
+
+        // Prepare the data object
+        const newSet = {
+            yes: yes,
+            no: no,
+            dontcare: dontCare
+        };
+
+        // Retrieve existing data from localStorage
+        let responseData = JSON.parse(localStorage.getItem('userResponses')) || [];
+
+        // Add the new data set
+        responseData.push(newSet);
+
+        // Store the updated data in localStorage
+        localStorage.setItem('userResponses', JSON.stringify(responseData));
+
+        // Redirect to the results page
+        window.location.href = 'results.html';
+    });
 </script>
 </body>
 </html>
