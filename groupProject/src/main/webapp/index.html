@@ -19,6 +19,7 @@
             color: #ffb400; /* Accent Color: Yellow */
         }
 
+
         div {
             margin-bottom: 20px;
         }
@@ -51,9 +52,45 @@
         a:hover {
             color: #ff8000; /* Darker Yellow on Hover */
         }
+
+
+
+
+        /* Tooltip container */
+        .tooltip {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background-color: #ff0000; /* Red */
+            color: #ffffff; /* White */
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hide initially */
+        }
+
+        /* Tooltip arrow */
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-top: -5px; /* Half of the arrow height */
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent #ff0000; /* Transparent on three sides, red on the right */
+        }
+
+        /* Show tooltip on hover */
+        input[type="number"]:invalid + .tooltip {
+            display: block;
+        }
     </style>
 </head>
 <body>
+
+<!-- Tooltip for number input validation -->
+<div class="tooltip">Please enter only numbers.</div>
 <h1 id="randomQuestionHeading">Random Question:</h1>
 
 
